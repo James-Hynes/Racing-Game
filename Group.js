@@ -16,6 +16,8 @@ class Group extends Array {
 	}
 
 	colliding(i) {
-		return this.some(i.checkBoxHit, i);
+		return this.some((s) => {
+			return i.checkBoxHit(s);
+		});
 	}
 }

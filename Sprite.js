@@ -16,7 +16,7 @@ class Sprite {
 	}
 
 	display() {
-    if(this.colliderBox === undefined && this.img.height !== 1) { this.colliderBox = (this.img.height > this.img.width) ? this.img.height : this.img.width };
+    if(this.colliderBox === undefined && this.img.height !== 1) { this.colliderBox = (this.img.height > this.img.width) ? this.img.height * this.scale : this.img.width * this.scale};
     push();
 		imageMode(CENTER);
 		translate(this.pos.x, this.pos.y);
@@ -29,18 +29,17 @@ class Sprite {
     push();
     noFill();
     stroke(0, 255, 0);
-    strokeWeight(2);
     rectMode(CENTER);
-    rect(this.pos.x, this.pos.y, this.colliderBox * this.scale, this.colliderBox * this.scale);
+    rect(this.pos.x, this.pos.y, this.colliderBox, this.colliderBox);
     pop();
   }
 
 	checkBoxHit(s) {
 		return !(
-			( ( this.pos.y + this.colliderBox) < (s.pos.y) ) ||
-			( this.pos.y > (s.pos.y + s.colliderBox) ) ||
-			( (this.pos.x + this.colliderBox) < s.pos.x) ||
-			( this.pos.x > (s.pos.x + s.colliderBox) )
+			( ( this.pos.y - (this.colliderBox / 2)) > (s.pos.y + (s.colliderBox / 2)) ) ||
+			( (this.pos.y + (this.colliderBox / 2)) < (s.pos.y - (s.colliderBox / 2)) ) ||
+			( (this.pos.x - (this.colliderBox / 2)) > s.pos.x + (s.colliderBox / 2)) ||
+			( (this.pos.x + (this.colliderBox / 2)) < (s.pos.x - (s.colliderBox / 2)) )
 			);
 	}
 }
