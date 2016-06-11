@@ -11,13 +11,21 @@ class Group extends Array {
 		this.forEach(s => s.display() );
 	}
 
+	remove(i) {
+		var item = this[i];
+		this.splice(i, 1);
+		return item;
+	}
+
 	drawDebugInfo() {
 		this.forEach(s => s.drawDebugInfo() );
 	}
 
 	colliding(i) {
 		return this.some((s) => {
-			return i.checkBoxHit(s);
+			if(i.checkBoxHit(s)) {
+				return true;
+			}
 		});
 	}
 }

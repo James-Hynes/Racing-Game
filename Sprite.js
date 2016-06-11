@@ -26,12 +26,12 @@ class Sprite {
 	}
 
   drawDebugInfo() {
-    push();
+    // push();
     noFill();
     stroke(0, 255, 0);
     rectMode(CENTER);
     rect(this.pos.x, this.pos.y, this.colliderBox, this.colliderBox);
-    pop();
+    // pop();
   }
 
 	checkBoxHit(s) {
@@ -41,5 +41,42 @@ class Sprite {
 			( (this.pos.x - (this.colliderBox / 2)) > s.pos.x + (s.colliderBox / 2)) ||
 			( (this.pos.x + (this.colliderBox / 2)) < (s.pos.x - (s.colliderBox / 2)) )
 			);
+	}
+
+	checkPixelHit(s) {
+		this.img.loadPixels();
+		s.img.loadPixels();
+
+		var x = Math.round(this.pos.x - (this.colliderBox / 2)),
+				y = Math.round(this.pos.y - (this.colliderBox / 2)),
+				x2 = Math.round(s.pos.x - (s.colliderBox / 2)),
+				y2 = Math.round(s.pos.y - (s.colliderBox / 2));
+
+
+		var xMin = Math.max(x, x2);
+		var yMin = Math.max(y, y2);
+		var xMax = Math.min(x + this.colliderBox, x2 + s.colliderBox);
+		var yMax = Math.min(y + this.colliderBox, y2 + s.colliderBox);
+
+		var xDiff = xMax - xMin,
+				yDiff = yMax - yMin;
+
+		for(var pixelX = xMin; pixelX < xMax; pixelX++) {
+			for(var pixelY = yMin; pixelY < yMax; pixelY++) {
+				var pixel1 = this.img.get((pixelX - x), (pixelY - y));
+				var pixel2 = s.img.get((pixelX - x2), (pixelY - y2));
+				// var pixel2 = ( ((pixelX - x2) + (pixelY - y2)) * s.colliderBox) * 4 + 3;
+				// console.log(this.img.pixels[pixel1], s.img.pixels[pixel2]);
+				console.log(pixel1, pixel2);
+				if(alpha(pixel1) !== 0 && alpha(pixel2) !== 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	globalPosToSprite(pos) {
+		return createVector((this.pos.x - (this.colliderBox / 2) - pos.x, pos.y - (this.pos.y - (this.colliderBox / 2))));
 	}
 }

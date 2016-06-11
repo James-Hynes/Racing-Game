@@ -8,4 +8,6 @@ function END_BLOCK(name) {
   blocks[name].push(performance.now() - blocks[name][0]);
 }
 
+
+
 // write time debug code + thread draw loop
